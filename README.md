@@ -1,8 +1,8 @@
 # 127.0.0.1 Proxy Stuck Fix
 
-> **English summary:** On Windows 11, if apps suddenly time out on `127.0.0.1` (e.g. `ERR_CONNECTION_TIMED OUT (-118)` in 123 Cloud Drive) or Clash Verge says *"proxy server error / not connected"*, the cause is usually two proxy-based tools (game accelerators like Xunyou/Gili/Yoyo + Clash Verge) fighting over the **system proxy**. Whichever exits last leaves `ProxyServer = 127.0.0.1:dead-port` behind, and every proxied app hangs until timeout. This repo contains the diagnosis, the manual fix, and a one-click repair script.
+> **English summary:** On Windows 11, if apps suddenly time out on `127.0.0.1` (e.g. `ERR_CONNECTION_TIMED OUT (-118)` in 123 Cloud Drive) or Clash Verge says *"proxy server error / not connected"*, the cause is usually two proxy-based tools (game accelerators like Xunyou/Gili/UU + Clash Verge) fighting over the **system proxy**. Whichever exits last leaves `ProxyServer = 127.0.0.1:dead-port` behind, and every proxied app hangs until timeout. This repo contains the diagnosis, the manual fix, and a one-click repair script.
 
-修复 Windows 上加速器（迅游 / 给梨 / 悠悠）与 Clash Verge 冲突导致的**系统代理卡死**——症状为 `127.0.0.1` 访问超时、`ERR_CONNECTION_TIMED OUT (-118)`、"代理服务器出现问题或地址有误"。
+修复 Windows 上加速器（迅游 / 给梨 / UU）与 Clash Verge 冲突导致的**系统代理卡死**——症状为 `127.0.0.1` 访问超时、`ERR_CONNECTION_TIMED OUT (-118)`、"代理服务器出现问题或地址有误"。
 
 ## 目录
 
@@ -20,7 +20,7 @@
 
 - 各类软件访问 `127.0.0.1` 或走代理的请求"响应时间太长"，最终超时
 - 123云盘 App 打不开：`ERR_CONNECTION_TIMED OUT (-118)`
-- 悠悠加速器、华硕 Armoury Crate 等 App 加载不出来
+- UU 加速器、华硕 Armoury Crate 等 App 加载不出来
 - Clash Verge 开系统代理后访问 GitHub 提示：
   > 未连接到互联网，代理服务器出现问题或地址有误
 - 腾讯电脑管家 / 360 的"网络异常修复"**检测不出问题**
@@ -36,7 +36,7 @@
 
 ## 根因分析
 
-给梨、迅游、悠悠这类加速器和 Clash Verge 的原理完全相同：
+给梨、迅游、UU 这类加速器和 Clash Verge 的原理完全相同：
 
 > 在本地开一个监听 `127.0.0.1:端口`（常见 7897）的代理服务，然后把 Windows 的"系统代理"指向它，让全部流量先经过本地端口再转发出去。
 
@@ -70,8 +70,8 @@
 脚本五步：
 
 1. 打印修复前代理状态快照（`ProxyEnable` / `ProxyServer` / `AutoConfigURL` / `netsh winhttp`）
-2. 结束迅游相关进程（按进程名模式匹配）
-3. 停止并**禁用**迅游相关服务（禁用而非只停止，防止开机再抢代理）
+2. 结束加速器相关进程（迅游 / UU，按进程名模式匹配）
+3. 停止并**禁用**加速器相关服务（迅游 / UU，禁用而非只停止，防止开机再抢代理）
 4. 清除系统代理注册表项 + `netsh winhttp reset proxy` + `ipconfig /flushdns`
 5. 打印修复后状态（应显示"直接访问"）
 

@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-title 迅游加速器 + Clash Verge 系统代理修复
+title 加速器(迅游/UU) + Clash Verge 系统代理修复
 
 :: 必须管理员权限
 net session >nul 2>&1
@@ -20,15 +20,15 @@ netsh winhttp show proxy
 echo.
 
 echo ==================================================
-echo  第 2 步：结束迅游相关进程
+echo  第 2 步：结束迅游 / UU 相关进程
 echo ==================================================
-powershell -NoProfile -Command "$n=@('xunyou','xy','xyf','xyapp','xyservice','xunyouacc','xyspeed'); Get-Process | Where-Object { $m=$_.ProcessName.ToLower(); ($n -contains $m) -or ($m -match 'xunyou|迅游') } | ForEach-Object { Write-Host ('  结束: ' + $_.ProcessName + ' (PID ' + $_.Id + ')'); Stop-Process -Id $_.Id -Force }"
+powershell -NoProfile -Command "$n=@('xunyou','xy','xyf','xyapp','xyservice','xunyouacc','xyspeed','uu','uugamebox','uuaccelerator','neteaseuu'); Get-Process | Where-Object { $m=$_.ProcessName.ToLower(); ($n -contains $m) -or ($m -match 'xunyou|迅游|uuacc|uugame') } | ForEach-Object { Write-Host ('  结束: ' + $_.ProcessName + ' (PID ' + $_.Id + ')'); Stop-Process -Id $_.Id -Force }"
 echo.
 
 echo ==================================================
-echo  第 3 步：停止并禁用迅游相关服务
+echo  第 3 步：停止并禁用迅游 / UU 相关服务
 echo ==================================================
-powershell -NoProfile -Command "Get-Service | Where-Object { $_.Name -match 'xunyou|迅游' -or $_.DisplayName -match 'xunyou|迅游' } | ForEach-Object { Write-Host ('  停止: ' + $_.DisplayName); Stop-Service -Name $_.Name -Force -ErrorAction SilentlyContinue; Set-Service -Name $_.Name -StartupType Disabled -ErrorAction SilentlyContinue }"
+powershell -NoProfile -Command "Get-Service | Where-Object { $_.Name -match 'xunyou|迅游|^uu|uuacc|uugame' -or $_.DisplayName -match 'xunyou|迅游|UU加速|网易UU' } | ForEach-Object { Write-Host ('  停止: ' + $_.DisplayName); Stop-Service -Name $_.Name -Force -ErrorAction SilentlyContinue; Set-Service -Name $_.Name -StartupType Disabled -ErrorAction SilentlyContinue }"
 echo.
 
 echo ==================================================
